@@ -643,27 +643,26 @@ async def test_downloader(title_id: int, start: int, end: int):
                 padding=(1, 2),
             )
 
+        # 로그인 쿠키
+        nid_aut: Optional[str] = None
+        nid_ses: Optional[str] = None
+
+        print("로그인 정보가 필요합니다.")
+        print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
+
+        nid_aut = input("NID_AUT: ").strip()
+        nid_ses = input("NID_SES: ").strip()
+
+        if not nid_aut or not nid_ses:
+            print("NID_AUT와 NID_SES 값이 모두 필요합니다.")
+            return
+
         # Live로 동일 패널 갱신
         with Live(
             analyzer_panel(title_id), console=console, refresh_per_second=4
         ) as live:
-            analyzer = await WebtoonAnalyzer.create(title_id)
+            analyzer = await WebtoonAnalyzer.create(title_id, nid_aut, nid_ses)
             live.update(analyzer_panel(title_id, analyzer))
-
-        # 성인 웹툰 인증용 쿠키
-        nid_aut: Optional[str] = None
-        nid_ses: Optional[str] = None
-
-        if analyzer.is_adult:
-            print("성인 웹툰입니다. 로그인 정보가 필요합니다.")
-            print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
-
-            nid_aut = input("NID_AUT: ").strip()
-            nid_ses = input("NID_SES: ").strip()
-
-            if not nid_aut or not nid_ses:
-                print("NID_AUT와 NID_SES 값이 모두 필요합니다.")
-                return
 
         # 다운로더로 다운로드 실행
         downloader = WebtoonDownloader(
