@@ -44,10 +44,6 @@ async def main() -> None:
                 # 객체 생성 -> 유저한테 입력받은 정보를 토대로 title_id 얻기
                 title_id: int = WebtoonSearch(query).title_id
 
-                # 로그인 쿠키
-                nid_aut: Optional[str] = None
-                nid_ses: Optional[str] = None
-
                 print("로그인 정보가 필요합니다.")
                 print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
 

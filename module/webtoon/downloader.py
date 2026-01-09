@@ -643,10 +643,6 @@ async def test_downloader(title_id: int, start: int, end: int):
                 padding=(1, 2),
             )
 
-        # 로그인 쿠키
-        nid_aut: Optional[str] = None
-        nid_ses: Optional[str] = None
-
         print("로그인 정보가 필요합니다.")
         print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
 
