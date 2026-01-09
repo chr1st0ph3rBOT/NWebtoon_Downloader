@@ -44,29 +44,17 @@ async def main() -> None:
                 # 객체 생성 -> 유저한테 입력받은 정보를 토대로 title_id 얻기
                 title_id: int = WebtoonSearch(query).title_id
 
+                print("로그인 정보가 필요합니다.")
+                print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
+
+                nid_aut = input("NID_AUT : ").strip()
+                nid_ses = input("NID_SES : ").strip()
+
+                if not nid_aut or not nid_ses:
+                    raise Exception("NID_AUT와 NID_SES 값이 필요합니다.")
+
                 # title_id를 이용해 웹툰 정보 파싱
-                analyzer = await WebtoonAnalyzer.create(title_id)
-
-                # 성인 웹툰 인증용 쿠키
-                nid_aut: Optional[str] = None
-                nid_ses: Optional[str] = None
-
-                if analyzer.is_adult:
-                    print("성인 웹툰입니다. 로그인 정보가 필요합니다.")
-                    print("NID_AUT와 NID_SES 쿠키 값을 입력해주세요.")
-
-                    nid_aut = input("NID_AUT : ").strip()
-                    nid_ses = input("NID_SES : ").strip()
-
-                    if not nid_aut or not nid_ses:
-                        raise Exception("NID_AUT와 NID_SES 값이 필요합니다.")
-                    else:
-                        # nid_aut, nid_ses 입력시 analyzer 객체 갱신 (재생성)
-                        analyzer = await WebtoonAnalyzer.create(
-                            title_id, nid_aut, nid_ses
-                        )
-
-                        print(analyzer.__dict__)
+                analyzer = await WebtoonAnalyzer.create(title_id, nid_aut, nid_ses)
 
                 # 분석된 웹툰 정보를 Rich 패널로 표시 (downloader.py 디자인 참고)
                 console = Console()
